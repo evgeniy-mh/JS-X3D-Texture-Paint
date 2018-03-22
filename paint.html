@@ -7,28 +7,23 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>JS Paint</title>
-
-    <!--подключаем файл js  css внутри кавычки -->
-    <link rel="stylesheet" type="text/css" href="paint.css">    
-
+    <link rel="stylesheet" type="text/css" href="paint.css">
 </head>
 
 <body>
-    <form action="" method="get">
-        <input type="text" value="" />
-        <input type="reset" value="Очистить" />
-    </form>
-    <center>
-        <br>
-        <br>
-        <br>
-        <section>
-            <canvas id="c1" width="800" height="400"></canvas>
-            <input type="color" id="color">
-    </center>
-    <div id="othersTools">
-        <button id="clearCanvas" onclick="clear()">очистить</button>
+    <div class="paintCanvas">
+        <canvas id="c1" width="800" height="400"></canvas>
     </div>
+
+    <div id="othersTools">
+        <div>
+            Цвет:
+            <input type="color" id="colorSelector">
+        </div>
+
+        <button id="clearCanvas" onclick="clear()">Очистить</button>
+    </div>
+
     </section>
 </body>
 

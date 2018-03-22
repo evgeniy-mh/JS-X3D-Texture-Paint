@@ -1,4 +1,10 @@
  
 body {
-    background-color: black;
+    background-color: gainsboro;
   }
+
+.paintCanvas{
+    background: white;
+    padding: 5px;
+    border: solid 1px black; 
+}

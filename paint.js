@@ -1,28 +1,27 @@
 
 var canvas = document.getElementById('c1');
-var ctx = canvas.getContext('2d');
-var myColor = 'red';
-
+var context = canvas.getContext('2d');
 var clearButton = document.getElementById('clearCanvas');
+var colorSelector=document.getElementById('colorSelector');
+
+var myColor = "red";
 
 clearButton.onclick = function () {
-    console.log("sadasd");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
 };
 
-
-document.getElementById('color').oninput = function () {
+colorSelector.value=myColor;
+colorSelector.oninput = function () {
     myColor = this.value;
 }
-// ctx.fillRect(x, y, 10, 10); //   то кординаты где мишка отрисовывается прямоугольник 10х10 в пикселях
+
 canvas.onmousedown = function (event) {
     canvas.onmousemove = function (event) {
         var x = event.offsetX;
         var y = event.offsetY;
-        ctx.fillRect(x - 5, y - 5, 10, 10);
-        ctx.fillStyle = myColor;
-        ctx.fill();
-
+        context.fillStyle = myColor;
+        context.fillRect(x - 5, y - 5, 10, 10);        
+        context.fill();
 
 
     }
