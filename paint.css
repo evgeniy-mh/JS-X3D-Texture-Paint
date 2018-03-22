@@ -4,7 +4,9 @@ body {
   }
 
 .paintCanvas{
+    margin: 0 auto;
+    width: 800px;
+    height: 600px;
     background: white;
-    padding: 5px;
     border: solid 1px black; 
 }

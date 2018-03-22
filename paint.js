@@ -18,9 +18,6 @@ colorSelector.oninput = function () {
 }
 
 lineWidthInput.value = myLineSize;
-/* setLineWidth = function () {
-    myLineSize=lineWidthInput.value;
-} */
 lineWidthInput.oninput = function () {
     myLineSize=lineWidthInput.value;
 }
@@ -30,10 +27,8 @@ canvas.onmousedown = function (event) {
         var x = event.offsetX;
         var y = event.offsetY;
         context.fillStyle = myColor;
-        context.fillRect(x - 5, y - 5, myLineSize, myLineSize);
+        context.fillRect(x - myLineSize/2, y - myLineSize/2, myLineSize, myLineSize);
         context.fill();
-
-
     }
     canvas.onmouseup = function () {
         canvas.onmousemove = null;
