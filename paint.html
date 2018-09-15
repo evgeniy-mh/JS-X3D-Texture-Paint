@@ -17,47 +17,51 @@
 
 
 
-
-
-
-
     </script>
 </head>
 
 <body>
 
-    <x3d id="aScene" showLog="false" x="0px" y="0px" width="500px" height="350px">
-        <scene>
-            <background skyColor='0.15 0.15 0.15'></background>
-            <viewpoint position='0 0 5'></viewpoint>
-            <shape>
-                <appearance>
-                    <texture hideChildren="false">
-                        <canvas width='256' height='256' id='textureCanvas' style="border: solid 1px black; position:absolute; top:20px;left:520px;">
-                    </texture>
-                    <material diffuseColor='0 0 0'></material>
-                </appearance>
-                <box></box>
-            </shape>
-        </scene>
-    </x3d>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <x3d id="aScene" showLog="false" x="0px" y="0px" width="500px" height="350px">
+                        <scene>
+                            <background skyColor='0.15 0.15 0.15'></background>
+                            <viewpoint position='0 0 5'></viewpoint>
+                            <shape>
+                                <appearance>
+                                    <texture hideChildren="false">
+                                        <canvas width='256' height='256' id='textureCanvas' style="border: solid 1px black; position:absolute; top:20px;left:520px;">
+                                    </texture>
+                                    <material diffuseColor='0 0 0'></material>
+                                </appearance>
+                                <box></box>
+                            </shape>
+                        </scene>
+                    </x3d>
 
-    <!--     <div class="paintCanvas">
-        <canvas id="c1" width="800" height="600"></canvas>
-    </div> -->
-    <div>
-        <div>
-            Цвет:
-            <input type="color" id="colorSelector">
-        </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        Цвет:
+                        <input type="color" id="colorSelector">
+                    </div>
 
-        <button id="clearCanvas" onclick="clear()">Очистить</button>
+                    <button id="clearCanvas" onclick="clear()">Очистить</button>
 
-        <div>
-            Толщина линии:
-            <input id="lineWidthInput" type="number" name="quantity" min="1" max="20"> px
-        </div>
-    </div>
+                    <div>
+                        Толщина линии:
+                        <input id="lineWidthInput" type="number" name="quantity" min="1" max="20"> px
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
 
 <!--Подключение Java Script кода-->
