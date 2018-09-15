@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <!--Заголовок страницы-->
     <title>JS Paint</title>
+
+    <!--Подключение таблицы стилей paint.css-->
     <link rel="stylesheet" type="text/css" href="paint.css">
 </head>
 
 <body>
     <div class="paintCanvas">
+        <!--Холст для рисования-->
         <canvas id="c1" width="800" height="600"></canvas>
     </div>
-
     <div>
         <div>
             Цвет:
+            <!--Диалог выбора цвета кисти-->
             <input type="color" id="colorSelector">
         </div>
 
+        <!--Кнопка для очистки холста-->
         <button id="clearCanvas" onclick="clear()">Очистить</button>
 
         <div>
             Толщина линии:
+            <!--Выбор толщины кисти-->
             <input id="lineWidthInput" type="number" name="quantity" min="1" max="20"> px
         </div>
     </div>
-
-    </section>
 </body>
 
+<!--Подключение Java Script кода-->
 <script src="paint.js"></script>
 
 </html>

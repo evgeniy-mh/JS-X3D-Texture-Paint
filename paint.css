@@ -1,12 +1,13 @@
- 
+/* Стиль тела страницы */
 body {
-    background-color: gainsboro;
+    background-color: gainsboro; /* Цвет фона */
   }
 
+/* Стиль холста */
 .paintCanvas{
-    margin: 0 auto;
-    width: 800px;
-    height: 600px;
-    background: white;
-    border: solid 1px black; 
+    margin: 0 auto; /* Внешний отступ элемента */
+    width: 800px; /* Ширина элемента */
+    height: 600px; /* Высота элемента */
+    background: white; /* Цвет фона */
+    border: solid 1px black; /* Толщина границы элемента */
 }
