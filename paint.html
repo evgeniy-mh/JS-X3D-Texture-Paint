@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,26 +11,50 @@
 
     <!--Подключение таблицы стилей paint.css-->
     <link rel="stylesheet" type="text/css" href="paint.css">
+    <link rel="stylesheet" type="text/css" href="http://www.x3dom.org/download/x3dom.css">
+    </link>
+    <script type="text/javascript" src="http://www.x3dom.org/download/x3dom.js">
+
+
+
+
+
+
+
+    </script>
 </head>
 
 <body>
-    <div class="paintCanvas">
-        <!--Холст для рисования-->
+
+    <x3d id="aScene" showLog="false" x="0px" y="0px" width="500px" height="350px">
+        <scene>
+            <background skyColor='0.15 0.15 0.15'></background>
+            <viewpoint position='0 0 5'></viewpoint>
+            <shape>
+                <appearance>
+                    <texture hideChildren="false">
+                        <canvas width='256' height='256' id='textureCanvas' style="border: solid 1px black; position:absolute; top:20px;left:520px;">
+                    </texture>
+                    <material diffuseColor='0 0 0'></material>
+                </appearance>
+                <box></box>
+            </shape>
+        </scene>
+    </x3d>
+
+    <!--     <div class="paintCanvas">
         <canvas id="c1" width="800" height="600"></canvas>
-    </div>
+    </div> -->
     <div>
         <div>
             Цвет:
-            <!--Диалог выбора цвета кисти-->
             <input type="color" id="colorSelector">
         </div>
 
-        <!--Кнопка для очистки холста-->
         <button id="clearCanvas" onclick="clear()">Очистить</button>
 
         <div>
             Толщина линии:
-            <!--Выбор толщины кисти-->
             <input id="lineWidthInput" type="number" name="quantity" min="1" max="20"> px
         </div>
     </div>
