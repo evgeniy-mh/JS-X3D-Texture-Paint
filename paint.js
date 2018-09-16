@@ -1,6 +1,6 @@
 
-var canvas = document.getElementById('textureCanvas'); //ссылка на холст
-var context = canvas.getContext('2d'); //ссылка на контекст холста
+var canvas; //ссылка на холст
+var context; //ссылка на контекст холста
 var clearButton = document.getElementById('clearCanvas'); //ссылка на кнопку очистки холста
 var colorSelector = document.getElementById('colorSelector'); //ссылка на элемент выбора цвета кисти
 var lineWidthInput = document.getElementById('lineWidthInput'); //ссылка на элемент выбора толщины линии кисти
@@ -10,6 +10,30 @@ var lineColor = "#ff0000"; //начальный цвет кисти
 var myLineSize = 10; //начальная толщина линии
 
 initCanvas = function () {
+    canvas = document.getElementById('textureCanvas'); //ссылка на холст
+    context = canvas.getContext('2d');
+
+    //инициализация обработчика события нажатия на холст
+    canvas.onmousedown = function (event) {
+        console.log("sadasdasd");
+        //инициализация обработчика события передвижения мыши по холсту
+        canvas.onmousemove = function (event) {
+            var x = event.offsetX;
+            var y = event.offsetY;
+
+            //рисование прямоугольника с заданными координатами и цветом
+            context.fillStyle = lineColor;
+            context.fillRect(x - myLineSize / 2, y - myLineSize / 2, myLineSize, myLineSize);
+            context.fill();
+
+            canvas.parentNode._x3domNode.invalidateGLObject();
+        }
+        //инициализация обработчика события отпускания кнопки мыши
+        canvas.onmouseup = function () {
+            canvas.onmousemove = null;
+        }
+    }
+
     canvasHeight = parseInt(document.getElementById("textureCanvas").getAttribute("height"));
     canvasWidth = parseInt(document.getElementById("textureCanvas").getAttribute("width"));
     context.lineWidth = 2;
@@ -66,7 +90,6 @@ loadNewModelButton.onclick = function () {
 
     var ot = document.getElementById('X3DTransformRoot');
     for (var i = 0; i < ot.childNodes.length; i++) {
-        // check if we have a real X3DOM Node; not just e.g. a Text-tag
         if (ot.childNodes[i].nodeType === Node.ELEMENT_NODE) {
             ot.removeChild(ot.childNodes[i]);
             break;
@@ -74,26 +97,36 @@ loadNewModelButton.onclick = function () {
     }
 
 
-    var t = document.createElement('Transform');
-        t.setAttribute("translation", "0 0 0" );
-        var s = document.createElement('Shape');
-		
-		// Appearance Node
-		var app = document.createElement('Appearance');
-		
-		// Material Node
-		var mat = document.createElement('Material');
-		
-		app.appendChild(mat);
-		
-		s.appendChild(app);
-		
-        t.appendChild(s);
-        var b = document.createElement('sphere');
-        s.appendChild(b);
-        
-        var ot = document.getElementById('X3DTransformRoot');
-        ot.appendChild(t);
+    var X3DTransform = document.createElement('transform');
+    X3DTransform.setAttribute("translation", "0 0 0");
+    var X3DShape = document.createElement('shape');
+
+    var X3DAppearance = document.createElement('appearance');
+    var X3DMaterial = document.createElement('material');
+
+    var texture = X3DAppearance.appendChild(document.createElement("texture"));
+    texture.setAttribute("hideChildren", "false");
+
+    var canvas = texture.appendChild(document.createElement("canvas"));
+    setAttributes(canvas, {
+        "width": "256",
+        "height": "256",
+        "id": "textureCanvas",
+        "style": "border: solid 1px black; position:absolute; top:20px;left:520px;"
+    });
+
+    X3DAppearance.appendChild(X3DMaterial);
+
+    X3DShape.appendChild(X3DAppearance);
+
+    X3DTransform.appendChild(X3DShape);
+    var b = document.createElement('sphere');
+    X3DShape.appendChild(b);
+
+    var ot = document.getElementById('X3DTransformRoot');
+    ot.appendChild(X3DTransform);
+    
+    initCanvas();
 }
 
 //инициализация обработчика события нажатия кнопки очистки холста
@@ -118,25 +151,4 @@ lineWidthInput.oninput = function () {
     myLineSize = lineWidthInput.value;
 }
 
-
 initCanvas();
-//инициализация обработчика события нажатия на холст
-canvas.onmousedown = function (event) {
-
-    //инициализация обработчика события передвижения мыши по холсту
-    canvas.onmousemove = function (event) {
-        var x = event.offsetX;
-        var y = event.offsetY;
-
-        //рисование прямоугольника с заданными координатами и цветом
-        context.fillStyle = lineColor;
-        context.fillRect(x - myLineSize / 2, y - myLineSize / 2, myLineSize, myLineSize);
-        context.fill();
-
-        canvas.parentNode._x3domNode.invalidateGLObject();
-    }
-    //инициализация обработчика события отпускания кнопки мыши
-    canvas.onmouseup = function () {
-        canvas.onmousemove = null;
-    }
-}
