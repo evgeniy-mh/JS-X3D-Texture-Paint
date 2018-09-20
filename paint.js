@@ -76,6 +76,51 @@ loadNewModelButton.onclick = function () {
     X3DTransformRoot = document.getElementById('X3DTransformRoot');
     X3DTransformRoot.appendChild(X3DTransform);
     initCanvas();
+
+    /*X3DShape.onmousedown=function(event){
+        if(event.button==2){
+            event.preventDefault();
+            console.log("dfdsf");
+        }      
+    }*/
+
+}
+
+function handleMouseClick(event) {
+    console.log("click");
+}
+
+function handleMouseMove(event) {
+    event.stopPropagation();
+    console.log("move");
+}
+
+document.onload = function () {
+    console.log("onload");
+    document.getElementById('PaintCheckbox').checked = false;
+    /*var X3DScene = document.getElementById('X3DScene');
+
+    X3DScene.setAttribute("onclick",event => {
+        //if (event.button == 1) {
+         //   event.preventDefault();
+            console.log("dfdsf");
+        //}
+    });*/
+
+    /*document.getElementById('X3DScene').addEventListener("click", handleMouseClick, true);
+    document.getElementById('X3DScene').addEventListener("mousemove", handleMouseMove, true);*/
+}
+
+function PaintCheckboxClick(checkBox) {
+    if (checkBox.checked) {
+        console.log("y");
+        document.getElementById('X3DScene').addEventListener("click", handleMouseClick, true);
+        document.getElementById('X3DScene').addEventListener("mousemove", handleMouseMove, true);
+    } else {
+        console.log("n");
+        document.getElementById('X3DScene').removeEventListener("click", handleMouseClick, true);
+        document.getElementById('X3DScene').removeEventListener("mousemove", handleMouseMove, true);
+    }
 }
 
 function clearX3DViev() {
@@ -88,7 +133,7 @@ function clearX3DViev() {
     }
 }
 
-function getX3DModel(){
+function getX3DModel() {
     return ShapeSelectListBox.options[ShapeSelectListBox.selectedIndex].attributes.name.value;
 }
 
