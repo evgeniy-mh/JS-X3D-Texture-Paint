@@ -6,6 +6,7 @@ var colorSelector = document.getElementById('colorSelector'); //ссылка н�
 var lineWidthInput = document.getElementById('lineWidthInput'); //ссылка на элемент выбора толщины линии кисти
 var loadNewModelButton = document.getElementById('loadNewModel');
 var ShapeSelectListBox = document.getElementById('ShapeSelectListBox');
+var X3DScene = document.getElementById('X3DScene');
 
 var lineColor = "#ff0000"; //начальный цвет кисти
 var myLineSize = 10; //начальная толщина линии
@@ -88,6 +89,19 @@ loadNewModelButton.onclick = function () {
 
 function handleMouseClick(event) {
     console.log("click");
+
+    //console.log(this.runtime.mousePosition(event));
+    var x = this.runtime.mousePosition(event)[0];
+    var y = this.runtime.mousePosition(event)[1];
+
+    //рисование прямоугольника с заданными координатами и цветом
+    context.fillStyle = lineColor;
+    context.fillRect(x - myLineSize / 2, y - myLineSize / 2, myLineSize, myLineSize);
+    context.fill();
+    canvas.parentNode._x3domNode.invalidateGLObject();
+
+
+    //console.log(this.runtime.getCurrentTransform(document.getElementById("TESTBox")));
 }
 
 function handleMouseMove(event) {
@@ -96,31 +110,7 @@ function handleMouseMove(event) {
 }
 
 document.onload = function () {
-    console.log("onload");
-    document.getElementById('PaintCheckbox').checked = false;
-    /*var X3DScene = document.getElementById('X3DScene');
 
-    X3DScene.setAttribute("onclick",event => {
-        //if (event.button == 1) {
-         //   event.preventDefault();
-            console.log("dfdsf");
-        //}
-    });*/
-
-    /*document.getElementById('X3DScene').addEventListener("click", handleMouseClick, true);
-    document.getElementById('X3DScene').addEventListener("mousemove", handleMouseMove, true);*/
-}
-
-function PaintCheckboxClick(checkBox) {
-    if (checkBox.checked) {
-        console.log("y");
-        document.getElementById('X3DScene').addEventListener("click", handleMouseClick, true);
-        document.getElementById('X3DScene').addEventListener("mousemove", handleMouseMove, true);
-    } else {
-        console.log("n");
-        document.getElementById('X3DScene').removeEventListener("click", handleMouseClick, true);
-        document.getElementById('X3DScene').removeEventListener("mousemove", handleMouseMove, true);
-    }
 }
 
 function clearX3DViev() {
@@ -134,7 +124,11 @@ function clearX3DViev() {
 }
 
 function getX3DModel() {
-    return ShapeSelectListBox.options[ShapeSelectListBox.selectedIndex].attributes.name.value;
+    if (ShapeSelectListBox.selectedIndex == 0) {
+        return "";
+    } else {
+        return ShapeSelectListBox.options[ShapeSelectListBox.selectedIndex].attributes.name.value;
+    }
 }
 
 //инициализация обработчика события нажатия кнопки очистки холста
