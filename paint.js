@@ -6,7 +6,7 @@ var colorSelector = document.getElementById('colorSelector'); //ссылка н�
 var lineWidthInput = document.getElementById('lineWidthInput'); //ссылка на элемент выбора толщины линии кисти
 var loadNewModelButton = document.getElementById('loadNewModel');
 var ShapeSelectListBox = document.getElementById('ShapeSelectListBox');
-var X3DScene = document.getElementById('X3DScene');
+var X3DRoot = document.getElementById('X3DRoot');
 
 var lineColor = "#ff0000"; //начальный цвет кисти
 var myLineSize = 10; //начальная толщина линии
@@ -49,42 +49,10 @@ function setAttributes(el, attrs) {
 
 loadNewModelButton.onclick = function () {
 
-    clearX3DViev();
+    
+    getX3DModel();
 
-    var X3DTransform = document.createElement('transform');
-    X3DTransform.setAttribute("translation", "0 0 0");
-    var X3DShape = document.createElement('shape');
-    var X3DAppearance = document.createElement('appearance');
-    var X3DMaterial = document.createElement('material');
-    var texture = X3DAppearance.appendChild(document.createElement("texture"));
-    texture.setAttribute("hideChildren", "false");
-    var canvas = texture.appendChild(document.createElement("canvas"));
-    setAttributes(canvas, {
-        "width": "256",
-        "height": "256",
-        "id": "textureCanvas",
-        "style": "border: solid 1px black; position:absolute; top:20px;left:520px;"
-    });
-
-    X3DAppearance.appendChild(X3DMaterial);
-    X3DShape.appendChild(X3DAppearance);
-    X3DTransform.appendChild(X3DShape);
-
-    var X3DModel = document.createElement(getX3DModel());
-
-    X3DShape.appendChild(X3DModel);
-
-    X3DTransformRoot = document.getElementById('X3DTransformRoot');
-    X3DTransformRoot.appendChild(X3DTransform);
     initCanvas();
-
-    /*X3DShape.onmousedown=function(event){
-        if(event.button==2){
-            event.preventDefault();
-            console.log("dfdsf");
-        }      
-    }*/
-
 }
 
 function handleMouseClick(event) {
@@ -124,10 +92,47 @@ function clearX3DViev() {
 }
 
 function getX3DModel() {
+
+
     if (ShapeSelectListBox.selectedIndex == 0) {
-        return "";
+
+        var el = document.createElement("inline");
+        setAttributes(el, {
+            "nameSpaceName": "Deer",
+            "mapDEFToID": "true",
+            "url": "Deer.x3d"
+        });
+
+        document.getElementById("X3DTransformRoot").remove();
+        document.getElementById("X3DScene").appendChild(el);
+
     } else {
-        return ShapeSelectListBox.options[ShapeSelectListBox.selectedIndex].attributes.name.value;
+        clearX3DViev();
+        var X3DTransform = document.createElement('transform');
+        X3DTransform.setAttribute("translation", "0 0 0");
+        var X3DShape = document.createElement('shape');
+        var X3DAppearance = document.createElement('appearance');
+        var X3DMaterial = document.createElement('material');
+        var texture = X3DAppearance.appendChild(document.createElement("texture"));
+        texture.setAttribute("hideChildren", "false");
+        var canvas = texture.appendChild(document.createElement("canvas"));
+        setAttributes(canvas, {
+            "width": "256",
+            "height": "256",
+            "id": "textureCanvas",
+            "style": "border: solid 1px black; position:absolute; top:20px;left:520px;"
+        });
+
+        X3DAppearance.appendChild(X3DMaterial);
+        X3DShape.appendChild(X3DAppearance);
+        X3DTransform.appendChild(X3DShape);
+
+        X3DModel = document.createElement(ShapeSelectListBox.options[ShapeSelectListBox.selectedIndex].attributes.name.value);
+
+        X3DShape.appendChild(X3DModel);
+
+        X3DTransformRoot = document.getElementById('X3DTransformRoot');
+        X3DTransformRoot.appendChild(X3DTransform);        
     }
 }
 
