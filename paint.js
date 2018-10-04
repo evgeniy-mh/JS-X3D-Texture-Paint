@@ -12,35 +12,76 @@ var lineColor = "#ff0000"; //начальный цвет кисти
 var myLineSize = 10; //начальная толщина линии
 
 
-
 initCanvas = function () {
     canvas = document.getElementById('textureCanvas'); //ссылка на холст
     context = canvas.getContext('2d');
 
-    //инициализация обработчика события нажатия на холст
-    canvas.onmousedown = function (event) {
-        //инициализация обработчика события передвижения мыши по холсту
-        canvas.onmousemove = function (event) {
-            var x = event.offsetX;
-            var y = event.offsetY;
+    canvas.onmousedown = function (e) {
+        var mouseX = e.offsetX;
+        var mouseY = e.offsetY;
 
-            //рисование прямоугольника с заданными координатами и цветом
-            context.fillStyle = lineColor;
-            context.fillRect(x - myLineSize / 2, y - myLineSize / 2, myLineSize, myLineSize);
-            context.fill();
-            canvas.parentNode._x3domNode.invalidateGLObject();
+        paint = true;
+        addClick(mouseX, mouseY);
+        redraw();
+    };
+
+    canvas.onmousemove = function (e) {
+        if (paint) {
+            addClick(e.offsetX, e.offsetY, true);
+            redraw();
         }
-        //инициализация обработчика события отпускания кнопки мыши
-        canvas.onmouseup = function () {
-            canvas.onmousemove = null;
-        }
-    }
+    };
+
+    canvas.onmouseup = function (e) {
+        paint = false;
+    };
+
+    canvas.onmouseleave = function (e) {
+        paint = false;
+    };
 
     canvasHeight = parseInt(document.getElementById("textureCanvas").getAttribute("height"));
     canvasWidth = parseInt(document.getElementById("textureCanvas").getAttribute("width"));
     context.lineWidth = 2;
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, canvasWidth, canvasHeight);
+}
+
+var clickX = new Array();
+var clickY = new Array();
+var clickDrag = new Array();
+var clickColor = new Array();
+var clickSize = new Array();
+var paint;
+
+function addClick(x, y, dragging) {
+    clickX.push(x);
+    clickY.push(y);
+    clickDrag.push(dragging);
+    clickColor.push(lineColor);
+    clickSize.push(myLineSize);
+}
+
+function redraw() {
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, canvasWidth, canvasHeight);
+    context.lineJoin = "round";
+
+    for (var i = 0; i < clickX.length; i++) {
+        context.beginPath();
+        if (clickDrag[i] && i) {
+            context.moveTo(clickX[i - 1], clickY[i - 1]);
+        } else {
+            context.moveTo(clickX[i] - 1, clickY[i]);
+        }
+        context.lineTo(clickX[i], clickY[i]);
+        context.closePath();
+        context.strokeStyle = clickColor[i];
+        context.lineWidth = clickSize[i];
+        context.stroke();
+    }
+    canvas.parentNode._x3domNode.invalidateGLObject();
 }
 
 function setAttributes(el, attrs) {
@@ -79,6 +120,7 @@ loadNewModelButton.onclick = function () {
     X3DTransformRoot = document.getElementById('X3DTransformRoot');
     X3DTransformRoot.appendChild(X3DTransform);
     initCanvas();
+    clearCanvas();
 }
 
 function clearX3DViev() {
@@ -97,11 +139,22 @@ function getX3DModel() {
 
 //инициализация обработчика события нажатия кнопки очистки холста
 clearButton.onclick = function () {
+    clearCanvas();
+};
+
+function clearCanvas() {
     //очистка холста
     context.clearRect(0, 0, canvas.width, canvas.height);
     canvas.parentNode._x3domNode.invalidateGLObject();
-    initCanvas();
-};
+    //initCanvas();
+
+    clickX = [];
+    clickY = [];
+    clickDrag = [];
+    clickColor = [];
+    clickSize = [];
+    redraw();
+}
 
 colorSelector.value = lineColor; //инициализация элемента выбора цвета начальным цветом
 //инициализация обработчика события выбора цвета
