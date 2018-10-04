@@ -52,6 +52,7 @@ var clickY = new Array();
 var clickDrag = new Array();
 var clickColor = new Array();
 var clickSize = new Array();
+var imageTexture;
 var paint;
 
 function addClick(x, y, dragging) {
@@ -67,6 +68,8 @@ function redraw() {
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, canvasWidth, canvasHeight);
     context.lineJoin = "round";
+
+    if(imageTexture) context.drawImage(imageTexture, 20, 20);
 
     for (var i = 0; i < clickX.length; i++) {
         context.beginPath();
@@ -153,6 +156,7 @@ function clearCanvas() {
     clickDrag = [];
     clickColor = [];
     clickSize = [];
+    imageTexture=null;
     redraw();
 }
 
@@ -168,6 +172,16 @@ lineWidthInput.value = myLineSize; //инициализация элемента
 lineWidthInput.oninput = function () {
     //обновление толщины линии
     myLineSize = lineWidthInput.value;
+}
+
+function openTextureFile(files) {
+    console.log(files)
+
+    imageTexture = new Image;
+    imageTexture.onload = function () {
+        redraw();
+    }
+    imageTexture.src = URL.createObjectURL(files[0]);
 }
 
 
