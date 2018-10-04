@@ -1,4 +1,3 @@
-
 var canvas; //ссылка на холст
 var context; //ссылка на контекст холста
 var clearButton = document.getElementById('clearCanvas'); //ссылка на кнопку очистки холста
@@ -11,6 +10,13 @@ var X3DScene = document.getElementById('X3DScene');
 var lineColor = "#ff0000"; //начальный цвет кисти
 var myLineSize = 10; //начальная толщина линии
 
+var clickX = new Array();
+var clickY = new Array();
+var clickDrag = new Array();
+var clickColor = new Array();
+var clickSize = new Array();
+var imageTexture;
+var paint;
 
 initCanvas = function () {
     canvas = document.getElementById('textureCanvas'); //ссылка на холст
@@ -46,14 +52,6 @@ initCanvas = function () {
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, canvasWidth, canvasHeight);
 }
-
-var clickX = new Array();
-var clickY = new Array();
-var clickDrag = new Array();
-var clickColor = new Array();
-var clickSize = new Array();
-var imageTexture;
-var paint;
 
 function addClick(x, y, dragging) {
     clickX.push(x);
@@ -115,9 +113,7 @@ loadNewModelButton.onclick = function () {
     X3DAppearance.appendChild(X3DMaterial);
     X3DShape.appendChild(X3DAppearance);
     X3DTransform.appendChild(X3DShape);
-
     var X3DModel = document.createElement(getX3DModel());
-
     X3DShape.appendChild(X3DModel);
 
     X3DTransformRoot = document.getElementById('X3DTransformRoot');
@@ -149,7 +145,6 @@ function clearCanvas() {
     //очистка холста
     context.clearRect(0, 0, canvas.width, canvas.height);
     canvas.parentNode._x3domNode.invalidateGLObject();
-    //initCanvas();
 
     clickX = [];
     clickY = [];
@@ -175,8 +170,6 @@ lineWidthInput.oninput = function () {
 }
 
 function openTextureFile(files) {
-    console.log(files)
-
     imageTexture = new Image;
     imageTexture.onload = function () {
         redraw();
@@ -190,6 +183,5 @@ function saveCanvas() {
         .replace("image/png", "image/octet-stream");
     download.setAttribute("href", image);
 }
-
 
 initCanvas();
