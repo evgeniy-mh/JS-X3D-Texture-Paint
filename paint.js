@@ -103,8 +103,8 @@ loadNewModelButton.onclick = function () {
     texture.setAttribute("hideChildren", "false");
     var canvas = texture.appendChild(document.createElement("canvas"));
     setAttributes(canvas, {
-        "width": "256",
-        "height": "256",
+        "width": "512",
+        "height": "512",
         "id": "textureCanvas",
         "style": "border: solid 1px black; position:absolute; top:20px;left:520px;"
     });
