@@ -11,6 +11,8 @@ var X3DScene = document.getElementById('X3DScene');
 var lineColor = "#ff0000"; //начальный цвет кисти
 var myLineSize = 10; //начальная толщина линии
 
+
+
 initCanvas = function () {
     canvas = document.getElementById('textureCanvas'); //ссылка на холст
     context = canvas.getContext('2d');
@@ -77,40 +79,6 @@ loadNewModelButton.onclick = function () {
     X3DTransformRoot = document.getElementById('X3DTransformRoot');
     X3DTransformRoot.appendChild(X3DTransform);
     initCanvas();
-
-    /*X3DShape.onmousedown=function(event){
-        if(event.button==2){
-            event.preventDefault();
-            console.log("dfdsf");
-        }      
-    }*/
-
-}
-
-function handleMouseClick(event) {
-    console.log("click");
-
-    //console.log(this.runtime.mousePosition(event));
-    var x = this.runtime.mousePosition(event)[0];
-    var y = this.runtime.mousePosition(event)[1];
-
-    //рисование прямоугольника с заданными координатами и цветом
-    context.fillStyle = lineColor;
-    context.fillRect(x - myLineSize / 2, y - myLineSize / 2, myLineSize, myLineSize);
-    context.fill();
-    canvas.parentNode._x3domNode.invalidateGLObject();
-
-
-    //console.log(this.runtime.getCurrentTransform(document.getElementById("TESTBox")));
-}
-
-function handleMouseMove(event) {
-    event.stopPropagation();
-    console.log("move");
-}
-
-document.onload = function () {
-
 }
 
 function clearX3DViev() {
@@ -124,11 +92,7 @@ function clearX3DViev() {
 }
 
 function getX3DModel() {
-    if (ShapeSelectListBox.selectedIndex == 0) {
-        return "";
-    } else {
-        return ShapeSelectListBox.options[ShapeSelectListBox.selectedIndex].attributes.name.value;
-    }
+    return ShapeSelectListBox.options[ShapeSelectListBox.selectedIndex].attributes.name.value;
 }
 
 //инициализация обработчика события нажатия кнопки очистки холста
@@ -152,5 +116,6 @@ lineWidthInput.oninput = function () {
     //обновление толщины линии
     myLineSize = lineWidthInput.value;
 }
+
 
 initCanvas();
