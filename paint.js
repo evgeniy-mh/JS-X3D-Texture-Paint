@@ -69,7 +69,7 @@ function redraw() {
     context.fillRect(0, 0, canvasWidth, canvasHeight);
     context.lineJoin = "round";
 
-    if(imageTexture) context.drawImage(imageTexture, 20, 20);
+    if (imageTexture) context.drawImage(imageTexture, 20, 20);
 
     for (var i = 0; i < clickX.length; i++) {
         context.beginPath();
@@ -156,7 +156,7 @@ function clearCanvas() {
     clickDrag = [];
     clickColor = [];
     clickSize = [];
-    imageTexture=null;
+    imageTexture = null;
     redraw();
 }
 
@@ -182,6 +182,13 @@ function openTextureFile(files) {
         redraw();
     }
     imageTexture.src = URL.createObjectURL(files[0]);
+}
+
+function saveCanvas() {
+    var download = document.getElementById("download");
+    var image = canvas.toDataURL("image/png")
+        .replace("image/png", "image/octet-stream");
+    download.setAttribute("href", image);
 }
 
 

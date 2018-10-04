@@ -13,9 +13,7 @@
     <link rel="stylesheet" type="text/css" href="paint.css">
     <link rel="stylesheet" type="text/css" href="http://www.x3dom.org/download/x3dom.css">
     </link>
-    <script type="text/javascript" src="http://www.x3dom.org/download/x3dom.js">
-
-    </script>
+    <script type="text/javascript" src="http://www.x3dom.org/download/x3dom.js"></script>
 </head>
 
 <body>
@@ -49,11 +47,11 @@
                     <div>
                         Цвет кисти:
                         <input type="color" id="colorSelector">
-                    </div>
+
 
                     <button id="clearCanvas" onclick="clear()">Очистить</button>
 
-                    <div>
+                        <br>
                         Толщина линии:
                         <input id="lineWidthInput" type="number" name="quantity" min="1" max="20"> px
                     </div>
@@ -73,8 +71,16 @@
             </tr>
             <tr>
                 <td>
-                    <label>Открыть файл с текстурой</label>
-                    <input type="file" id="input" onchange="openTextureFile(this.files)">
+                    <label>Открыть файл с текстурой (макс. разрешение 512х512)</label>
+                    <input type="file" id="input" onchange="openTextureFile(this.files)" accept=".jpg, .jpeg, .png">
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a id="download" download="image.png">
+                        <button type="button" onClick="saveCanvas()">Сохранить рисунок</button>
+                    </a>
                 </td>
             </tr>
         </tbody>
