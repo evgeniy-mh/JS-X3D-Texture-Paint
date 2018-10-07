@@ -202,4 +202,5 @@ function saveCanvas() {
     download.setAttribute("href", image);
 }
 
+//Инициализация canvas при загрузке страницы
 initCanvas();
