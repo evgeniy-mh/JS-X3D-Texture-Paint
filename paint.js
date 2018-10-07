@@ -3,25 +3,27 @@ var context; //ссылка на контекст холста
 var clearButton = document.getElementById('clearCanvas'); //ссылка на кнопку очистки холста
 var colorSelector = document.getElementById('colorSelector'); //ссылка на элемент выбора цвета кисти
 var lineWidthInput = document.getElementById('lineWidthInput'); //ссылка на элемент выбора толщины линии кисти
-var loadNewModelButton = document.getElementById('loadNewModel');
-var ShapeSelectListBox = document.getElementById('ShapeSelectListBox');
-var X3DScene = document.getElementById('X3DScene');
+var loadNewModelButton = document.getElementById('loadNewModel'); //ссылка на кнопку загрузки новой модели
+var ShapeSelectListBox = document.getElementById('ShapeSelectListBox'); //ссылка на элемент выбора модели
+var X3DScene = document.getElementById('X3DScene'); //ссылка на объект x3d
 
 var lineColor = "#ff0000"; //начальный цвет кисти
 var myLineSize = 10; //начальная толщина линии
 
-var clickX = new Array();
-var clickY = new Array();
-var clickDrag = new Array();
-var clickColor = new Array();
-var clickSize = new Array();
-var imageTexture;
-var paint;
+var clickX = new Array(); //массив с X координатами нажатий мышки
+var clickY = new Array(); //массив с Y координатами нажатий мышки
+var clickDrag = new Array(); //массив логических значений; в нем сохраняется true если в данный момент мышь двигалась
+var clickColor = new Array(); //массив значений цветов которыми были нарисованы линии
+var clickSize = new Array(); //массив значений размеров кисти во время рисования
+var imageTexture; //текстура
+var paint; //true- в данный момент пользователь рисует; false- в данный момент пользователь не рисует;
 
-initCanvas = function () {
+//Функция инициализации canvas
+function initCanvas() {
     canvas = document.getElementById('textureCanvas'); //ссылка на холст
     context = canvas.getContext('2d');
 
+    //Функция-обработчик события нажатия кнопки мыши
     canvas.onmousedown = function (e) {
         var mouseX = e.offsetX;
         var mouseY = e.offsetY;
@@ -31,6 +33,7 @@ initCanvas = function () {
         redraw();
     };
 
+    //Функция-обработчик события движения мыши
     canvas.onmousemove = function (e) {
         if (paint) {
             addClick(e.offsetX, e.offsetY, true);
@@ -38,10 +41,12 @@ initCanvas = function () {
         }
     };
 
+    //Функция-обработчик события отмены нажатия кнопки мыши
     canvas.onmouseup = function (e) {
         paint = false;
     };
 
+    //Функция-обработчик события когда мышь покидает область элемента canvas
     canvas.onmouseleave = function (e) {
         paint = false;
     };
@@ -53,6 +58,7 @@ initCanvas = function () {
     context.fillRect(0, 0, canvasWidth, canvasHeight);
 }
 
+//Функция нажатия на canvas
 function addClick(x, y, dragging) {
     clickX.push(x);
     clickY.push(y);
@@ -61,13 +67,18 @@ function addClick(x, y, dragging) {
     clickSize.push(myLineSize);
 }
 
+//функция перерисовки canvas
+//Вызывается после каждого изменения рисунка. Рисует на canvas все ранее 
+//сохраненные (в массивах clickX, clickY, ...)  линии с необходимыми 
+//параметрами цвета и толщины. Обновляет трехмерный x3d объект.
+
 function redraw() {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, canvasWidth, canvasHeight);
     context.lineJoin = "round";
 
-    if (imageTexture) context.drawImage(imageTexture, 20, 20);
+    if (imageTexture) context.drawImage(imageTexture, 0, 0);
 
     for (var i = 0; i < clickX.length; i++) {
         context.beginPath();
@@ -85,16 +96,19 @@ function redraw() {
     canvas.parentNode._x3domNode.invalidateGLObject();
 }
 
+//Функия позволяющая быстро задавать необходимые параметры HTML элементов при их создании
 function setAttributes(el, attrs) {
     for (var key in attrs) {
         el.setAttribute(key, attrs[key]);
     }
 }
 
+//Функция-обработчик события нажатия на кнопку загрузки новой трехмерной модели
 loadNewModelButton.onclick = function () {
-
+    //Удаление старого содержимого X3DTransformRoot
     clearX3DViev();
 
+    //Создание новых дочерних элементов с новой трехмерной фигурой
     var X3DTransform = document.createElement('transform');
     X3DTransform.setAttribute("translation", "0 0 0");
     var X3DShape = document.createElement('shape');
@@ -122,6 +136,7 @@ loadNewModelButton.onclick = function () {
     clearCanvas();
 }
 
+//Функция для удаления всем дочерних элементов X3DTransformRoot
 function clearX3DViev() {
     var X3DTransformRoot = document.getElementById('X3DTransformRoot');
     for (var i = 0; i < X3DTransformRoot.childNodes.length; i++) {
@@ -132,17 +147,18 @@ function clearX3DViev() {
     }
 }
 
+//Функция возвращающая название выбранной трехмерной модели
 function getX3DModel() {
     return ShapeSelectListBox.options[ShapeSelectListBox.selectedIndex].attributes.name.value;
 }
 
-//инициализация обработчика события нажатия кнопки очистки холста
+//Инициализация обработчика события нажатия кнопки очистки холста
 clearButton.onclick = function () {
     clearCanvas();
 };
 
+//Функкия для очистки canvas
 function clearCanvas() {
-    //очистка холста
     context.clearRect(0, 0, canvas.width, canvas.height);
     canvas.parentNode._x3domNode.invalidateGLObject();
 
@@ -169,6 +185,7 @@ lineWidthInput.oninput = function () {
     myLineSize = lineWidthInput.value;
 }
 
+//Функция-обработчик события выбора нового файла текстуры
 function openTextureFile(files) {
     imageTexture = new Image;
     imageTexture.onload = function () {
@@ -177,6 +194,7 @@ function openTextureFile(files) {
     imageTexture.src = URL.createObjectURL(files[0]);
 }
 
+//Функция для сохранения содержимого canvas
 function saveCanvas() {
     var download = document.getElementById("download");
     var image = canvas.toDataURL("image/png")
